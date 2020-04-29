@@ -39,28 +39,34 @@ export const createk = (Component, props) => {
   return comp
 }
 export const create = (Component, props) => {
-
+  // 组件是对象
+  // vue.extend构造器返回一个构造函数，参数是一个包含组件选项的对象，也可以是vue文件
+  // data 选项是特例，需要注意 - 在 Vue.extend() 中它必须是函数
   const NoticeConstractor = Vue.extend(Component);
-
-  const vm = new NoticeConstractor({
+  // 组件构造函数 参数是组件所需要的属性对象。
+  // 实例化得到实例 并挂载 得到真实dom
+  // 这里和上面不同的是 直接就拿到了实例 不需要取children
+  const comp = new NoticeConstractor({
     propsData: props
-  }).$mount();
+  }).$mount()
+  // 把元素加到body里
+  document.body.appendChild(comp.$el)
 
-  document.body.appendChild(vm.$el)
+  // 此处有坑：直接log是拿不到el的，打印出来的是注释符号。加了setTimeout就好了，猜测$mount方法是异步的，正在探究
 
   console.log('-------------');
-  console.log(vm.$el);
+  // setTimeout(() => {
+    console.log(comp.$el);
+  // }, 0)
   console.log('-------------');
-  console.log(vm.$children);
   
   // 淘汰机制
-  vm.remove = () => {
+  comp.remove = () => {
     // 删除dom
-    document.body.removeChild(vm.$el)
-
+    document.body.removeChild(comp.$el)
     // 销毁组件
-    vm.$destroy()
+    comp.$destroy()
   }
   
-  return vm
+  return comp
 }
