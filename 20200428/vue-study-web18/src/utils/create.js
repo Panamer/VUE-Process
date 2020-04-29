@@ -1,7 +1,7 @@
 import Vue from 'vue'
 
 // 可以动态创建组件实例并挂载至body
-export function create(Component, props) {
+export const create = (Component, props) => {
   // 1.组件实例怎么创建？
   // 方式1：组件配置对象 =》 Ctor = Vue.extend(Component)变成构造函数
   // =》 new Ctor()
@@ -37,4 +37,7 @@ export function create(Component, props) {
 
   // 返回Component组件实例
   return comp
+}
+export const createk = () => {
+  // 方式1：组件配置对象 =》 Ctor = Vue.extend(Component)变成构造函数
 }
