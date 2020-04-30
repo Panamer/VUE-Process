@@ -49,6 +49,12 @@ export const create = (Component, props) => {
   const comp = new NoticeConstractor({
     propsData: props
   }).$mount()
+
+  // 在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM
+  Vue.nextTick()
+  .then(function () {
+    console.log(comp.$el)
+  })
   
   // 追加dom
   document.body.appendChild(comp.$el)
@@ -58,7 +64,7 @@ export const create = (Component, props) => {
 
   console.log('-------------');
   // setTimeout(() => {
-  alert(comp.$el);
+  // alert(comp.$el);
   // }, 0)
   console.log('-------------');
   
