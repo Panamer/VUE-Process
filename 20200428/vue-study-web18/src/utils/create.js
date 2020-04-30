@@ -39,6 +39,7 @@ export const createkkb = (Component, props) => {
   return comp
 }
 export const create = (Component, props) => {
+  // 这种方法在官网中可以找到 ： https://cn.vuejs.org/v2/api/#propsData
   // 组件是对象
   // vue.extend构造器返回一个构造函数，参数是一个包含组件选项的对象，也可以是vue文件
   // data 选项是特例，需要注意 - 在 Vue.extend() 中它必须是函数
