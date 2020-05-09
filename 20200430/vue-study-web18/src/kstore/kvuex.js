@@ -1,20 +1,42 @@
 // 目标1：实现Store类，管理state（响应式的），commit方法和dispatch方法
 // 目标2：封装一个插件，使用更容易使用
 let Vue;
+const forEachValue = (obj, fn) => {
+  Object.keys(obj).forEach(key => fn(obj[key], key))
+}
+const partial = (fn, arg) =>{
+  return function () {
+    return fn(arg)
+  }
+}
+
+const computed = {}
 
 class Store {
   constructor(options) {
+    this.getters = {}
+    // reset local getters cache
+    const wrappedGetters = options.getters
+    forEachValue(wrappedGetters, (fn, key) => {
+      computed[key] = partial(fn, options.state)
+      Object.defineProperty(this.getters, key, {
+        get: () => this._vm[key],
+        enumerable: true // for local getters
+      })
+    })
     // 定义响应式的state
     // this.$store.state.xx
     // 借鸡生蛋
     this._vm = new Vue({
       data: {
         $$state: options.state
-      }
+      },
+      computed
     })
     
     this._mutations = options.mutations
     this._actions = options.actions
+    this._getters = options.getters
 
     // 绑定this指向
     this.commit = this.commit.bind(this)
@@ -54,6 +76,7 @@ class Store {
     // 上下文可以传递当前store实例进去即可
     entry(this, payload)
   }
+
 }
 
 function install(_Vue){
