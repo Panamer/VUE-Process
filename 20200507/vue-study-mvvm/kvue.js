@@ -177,7 +177,7 @@ class Compile {
     this.update(node, exp, 'model')
     // 输入事件监听
     node.addEventListener('input', (e) => {
-      // 新值赋值给input
+      // 新值赋值给数据data
       this.$vm[exp] = e.target.value
     })
   }
