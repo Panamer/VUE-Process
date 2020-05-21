@@ -39,6 +39,7 @@ export const createkkb = (Component, props) => {
   return comp
 }
 export const create = (Component, props) => {
+  // 这种方法在官网中可以找到 ： https://cn.vuejs.org/v2/api/#propsData
   // 组件是对象
   // vue.extend构造器返回一个构造函数，参数是一个包含组件选项的对象，也可以是vue文件
   // data 选项是特例，需要注意 - 在 Vue.extend() 中它必须是函数
@@ -49,6 +50,12 @@ export const create = (Component, props) => {
   const comp = new NoticeConstractor({
     propsData: props
   }).$mount()
+
+  // 在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM
+  Vue.nextTick()
+  .then(function () {
+    console.log(comp.$el)
+  })
   
   // 追加dom
   document.body.appendChild(comp.$el)
