@@ -58,7 +58,7 @@ export const create = (Component, props) => {
 
   console.log('-------------');
   // setTimeout(() => {
-  alert(comp.$el);
+  console.log(comp.$el);
   // }, 0)
   console.log('-------------');
   
