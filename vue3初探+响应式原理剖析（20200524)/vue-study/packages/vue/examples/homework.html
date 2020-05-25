@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue 作业</title>
+</head>
+<body>
+    <div id="app">
+        <input type="text" @keyup.enter="addItem">
+        <ul v-for="(item, index) in state.itemList" :key="index">
+            <li>{{item}}</li>
+        </ul>
+        <h4>length： {{itemListLength}}</h4>
+        <h4>length： {{length.value}}</h4>
+    </div>
+  <script src="../dist/vue.global.js"></script>
+  <script>
+      const { createApp, reactive, computed, onMounted, ref, toRefs } = Vue
+      // 😄😄😄 漂亮的安霞老师  see you next time 😄😄😄
+      const vm = createApp({
+          setup() {
+              // 声明响应式数据
+              const state = reactive({
+                  itemList: ['composition api', 'vue3'],
+                  itemListLength: computed(() => state.itemList.length)
+              })
+
+              function addItem(e){
+                state.itemList.push(e.target.value)
+                e.target.value = ''
+              }
+
+              // 单值响应式，ref将原始值包装为对象
+              const length = ref(0)
+              //  这种方式也可以实现计算属性
+              onMounted(() => {
+                length.value = computed(() => state.itemList.length) // 这里为何取值要加value
+              })
+
+              return {state, addItem, length, ...toRefs(state)}
+          }
+      })
+
+      vm.mount('#app')
+  </script>
+</body>
+</html>
