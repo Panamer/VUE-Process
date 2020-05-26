@@ -12,33 +12,34 @@
             <li>{{item}}</li>
         </ul>
         <h4>length： {{itemListLength}}</h4>
-        <h4>length： {{length.value}}</h4>
+        <h4>length： {{length}}</h4>
     </div>
   <script src="../dist/vue.global.js"></script>
   <script>
       const { createApp, reactive, computed, onMounted, ref, toRefs } = Vue
-      // 😄😄😄 漂亮的安霞老师  see you next time 😄😄😄
       const vm = createApp({
           setup() {
-              // 声明响应式数据
-              const state = reactive({
-                  itemList: ['composition api', 'vue3'],
-                  itemListLength: computed(() => state.itemList.length)
-              })
+            // 声明响应式数据
+            const state = reactive({
+                itemList: ['composition api', 'vue3'],
+                itemListLength: computed(() => state.itemList.length)
+            })
 
-              function addItem(e){
-                state.itemList.push(e.target.value)
-                e.target.value = ''
-              }
+            function addItem(e){
+            state.itemList.push(e.target.value)
+            e.target.value = ''
+            }
 
-              // 单值响应式，ref将原始值包装为对象
-              const length = ref(0)
-              //  这种方式也可以实现计算属性
-              onMounted(() => {
-                length.value = computed(() => state.itemList.length) // 这里为何取值要加value
-              })
+            // 单值响应式，ref将原始值包装为对象
+            const length = reactive(ref(0))
+            //  这种方式也可以实现计算属性
+            //  注意当嵌套在 reactive Object 中时，ref 才会解套。
+            //  从 Array 或者 Map 等原生集合类中访问 ref 时，不会自动解套
+            onMounted(() => {
+            length.value = computed(() => state.itemList.length)
+            })
 
-              return {state, addItem, length, ...toRefs(state)}
+            return {state, addItem, length, ...toRefs(state)}
           }
       })
 
