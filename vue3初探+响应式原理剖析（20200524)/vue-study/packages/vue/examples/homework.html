@@ -26,17 +26,18 @@
             })
 
             function addItem(e){
-            state.itemList.push(e.target.value)
-            e.target.value = ''
+                state.itemList.push(e.target.value)
+                e.target.value = ''
             }
+            //  这种方式也可以实现计算属性
+            const counter = computed(() => state.itemList.length)
 
             // 单值响应式，ref将原始值包装为对象
             const length = reactive(ref(0))
-            //  这种方式也可以实现计算属性
             //  注意当嵌套在 reactive Object 中时，ref 才会解套。
             //  从 Array 或者 Map 等原生集合类中访问 ref 时，不会自动解套
             onMounted(() => {
-            length.value = computed(() => state.itemList.length)
+                length.value = computed(() => state.itemList.length)
             })
 
             return {state, addItem, length, ...toRefs(state)}
